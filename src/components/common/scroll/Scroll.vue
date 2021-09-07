@@ -36,17 +36,28 @@ export default {
     this.scroll.on('scroll',position =>{
       // console.log(position);
       this.$emit('scroll',position)
-    })
+    });
 
-    // 3.监听上拉事件
-    this.scroll.on('pullingUp',()=>{
-      this.$emit('pullingUp')
-    })
+    // 3.监听scroll滚动到底部
+    if(this.pullUpLoad){
+      this.scroll.on('pullingUp',()=> {
+        this.$emit('pullingUp')
+      })
+    }
+
+
   },
 
   methods: {
     finishPullUp(){
       this.scroll.finishPullUp()
+    },
+    refresh() {
+      this.scroll.refresh()
+    },
+    
+    getScrollY() {
+      return this.scroll.y
     }
   }
 
