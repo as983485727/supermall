@@ -36,7 +36,7 @@
   import {getHomeMultidata,getHomeGoods} from 'network/home'
   import Scroll from '../../components/common/scroll/Scroll.vue'
   import BackTop from '../../components/content/backTop/BackTop.vue'
-  import {debounce} from 'common/utils'
+  import {itemListenerMixin} from 'common/mixin'
   
 
   
@@ -65,9 +65,11 @@
           isShowBackTop:false,
           tabOffsetTop:0,
           isTabFixed:false,
-          saveY:0
+          saveY:0,
+          itemImgListener:null
       }
     },
+    mixins:[itemListenerMixin],
     created() {
       // 1.请求多个数据
       this.getHomeMultidata()
@@ -78,12 +80,7 @@
       this.getHomeGoods('sell')
     },
     mounted() {
-      const refresh = debounce(this.$refs.scroll.refresh,200)
-      
-       // 监听item中图片加载完成
-      this.$bus.$on('itemImageLoad',()=>{
-        refresh()
-      })
+     
     },
     activated() {
       // console.log('activated');
@@ -93,6 +90,9 @@
     deactivated() {
       // console.log('deactivated');
       this.saveY = this.$refs.scroll.getScrollY()
+
+      // 2.取消全局事件的监听
+      this.$bus.$off('itemImageLoad',this.itemImgListener)
     },
     methods: {
       /**
@@ -104,7 +104,6 @@
 
       loadMore(){
         this.getHomeGoods(this.currentType)
-
       },
       tabClick(index) {
         // console.log(index);
