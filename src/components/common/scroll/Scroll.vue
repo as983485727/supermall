@@ -55,7 +55,9 @@ export default {
     refresh() {
       this.scroll.refresh()
     },
-    
+    scrollTo(x,y,time=100){
+      this.scroll.scrollTo(x,y,time)
+    },
     getScrollY() {
       return this.scroll.y
     }

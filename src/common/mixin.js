@@ -12,5 +12,6 @@ export const itemListenerMixin = {
       this.refresh()
     }
     this.$bus.$on("itemImageLoad",this.itemImgListener)
+    
   }
 }
